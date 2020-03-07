@@ -104,5 +104,5 @@ def get_a_patient_by_name(email, name):
 
 #Add a patient, delete a patient
 
-if __name__ == '__main__':
-    app.run(port=8000)
+#if __name__ == '__main__':
+#   app.run(port=8000)
