@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_pymongo import pymongo
+import datetime
 import re
 #import db
 
@@ -102,7 +103,27 @@ def get_a_patient_by_name(email, name):
 
     return jsonify({'result': output})
 
-#Add a patient, delete a patient
+@app.route('/addapatient/<email>', methods=['POST'])
+def add_a_patient(email):
+    patients = db.patients
+
+    govID = request.json['govID']
+    firstname = request.json['firstname']
+    lastname = request.json['lastname']
+    DOB = request.json['DOB']
+    Gender = request.json['Gender']
+    Orthodontics = request.json['Orthodontics']
+    OrthoType = request.json['OrthoType']
+    dentistemail = email
+
+    user_id = patients.insert({'govID': govID, 'firstname': firstname, 'lastname': lastname, 'DOB': DOB,
+                           'Gender': Gender, 'Orthodontics': Orthodontics, 'OrthoType': OrthoType, 'dentistemail' : email})
+
+    new_user = patients.find_one({'_id': user_id})
+
+    output = {'govID': new_user['govID'], 'firstname': new_user['firstname'], 'lastname': new_user['lastname'], 'DOB': new_user['DOB'], 'Gender': new_user['Gender'], 'Orthodontics': new_user['Orthodontics'], 'OrthoType': new_user['OrthoType'], 'dentistemail' : new_user['dentistemail']}
+
+    return jsonify({'result': output})
 
 if __name__ == '__main__':
     app.run(port=8000)
